@@ -7,19 +7,21 @@ import Toptab from './TopTab';
 import HomeScreen from '../Screens/Home';
 import Details from '../Screens/Details';
 import Filter from '../Screens/Filter.js';
+import Start from '../Screens/Start/Start';
+import {Tabs} from './bottomTabs';
 const Stack = createNativeStackNavigator();
 
 const Homestack = () => {
   return (
     <Stack.Navigator initialRouteName="Start">
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="BottomTabs"
+        component={Tabs}
         options={{headerShown: false}}
       />
       <Stack.Screen
         name="Start"
-        component={StartScreen}
+        component={Start}
         options={{headerShown: false}}
       />
       <Stack.Screen

@@ -130,7 +130,7 @@ const Details = props => {
             );
           })}
         </View>
-        <View style={[styles.title, {marginVertical: 10, bottom: 20}]}>
+        {/* <View style={[styles.title, {marginVertical: 10, bottom: 20}]}>
           <Text style={styles.titletext}>Filters :</Text>
           <Text style={styles.text1}>
             1, IsLactoseFree:-{meals.isLactoseFree.toUpperCase()}
@@ -144,7 +144,7 @@ const Details = props => {
           <Text style={styles.text1}>
             4, IsVegetarian:-{meals.isVegetarian.toUpperCase()}
           </Text>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

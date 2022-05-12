@@ -74,7 +74,6 @@ const Category = props => {
         padding: 10,
         borderRadius: 20,
         margin: 10,
-
         justifyContent: 'center',
         alignItems: 'center',
       }}>
