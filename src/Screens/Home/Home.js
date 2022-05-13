@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect} from 'react';
+import axios from 'axios';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,108 +16,94 @@ import {useDispatch, useSelector} from 'react-redux';
 import {DATA} from '../../Constants/modals';
 
 import * as mealsActions from './../../Store/actions/meals';
-
-const Item = ({title}) => (
-  <TouchableOpacity
-    style={styles.item}
-    onPress={() => {
-      {
-        title === 'All' ? console.log(title) : '';
-      }
-    }}>
-    <Text style={styles.title}>{title}</Text>
-  </TouchableOpacity>
-);
-
-const Category = props => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#f1f1f1',
-        padding: 10,
-        left: 10,
-        borderRadius: 20,
-        margin: 15,
-        marginTop: 55,
-        //height: '44%',
-        height: '90%',
-        width: '40%',
-      }}>
-      <TouchableOpacity onPress={props.onPress}>
-        <View
-          style={{
-            backgroundColor: '#f1f1f1',
-            width: '70%',
-            height: '200%',
-            top: -50,
-            left: 22,
-            borderRadius: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-          }}>
-          <Image
-            source={{
-              uri: props.image,
-            }}
-            style={{
-              backgroundColor: 'grey',
-              padding: 40,
-              justifyContent: 'center',
-              alignItems: 'baseline',
-              borderRadius: 40,
-            }}
-          />
-        </View>
-        <Text
-          style={{fontSize: 18, color: 'black', fontWeight: '600', top: 50}}>
-          {props.title}
-        </Text>
-      </TouchableOpacity>
-      <View style={{top: 70}}>
-        <Text style={{margin: 10, opacity: 0.8}}>Time</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text
-            style={{
-              fontSize: 14,
-              color: 'black',
-              fontWeight: '400',
-              left: 10,
-              marginBottom: 10,
-            }}>
-            {props.steps} Mins
-          </Text>
-          <TouchableOpacity
-            onPress={props.onSave}
-            style={{
-              backgroundColor: '#fff',
-              borderRadius: 20,
-              padding: 5,
-              bottom: 10,
-            }}>
-            <Icons name="bookmark" size={20} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-};
+import {Category} from './MealUI';
 
 const Home = props => {
+  const [masterdata, setmasterdata] = useState([]);
+  const [filtereddata, setfilterdata] = useState([]);
+  const [category, setCategory] = useState('Breakfast');
+
+  const [searchdata, setsearchdata] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const fabMeal = useSelector(state => state.meals.favorites);
-  //console.log('fff', fabMeal);
-
-  const mealItems = useSelector(state => state.meals.availableMeals);
-  useEffect(() => {
-    loadProducts();
-  }, [mealItems]);
-
-  const loadProducts = async () => {
-    await dispatch(mealsActions.MealsAction());
+  const fetchProducts = async () => {
+    axios
+      .get(`${mealsActions.URL}/meals/all`)
+      .then(response => {
+        setfilterdata(response.data ?? []);
+        setmasterdata(response.data ?? []);
+      })
+      .catch(function (error) {
+        alert(error);
+      });
   };
+
+  const fetchProductsByCategory = async () => {
+    axios
+      .get(`${mealsActions.URL}/meals/bycategory/${category}`)
+      .then(response => {
+        setfilterdata(response.data ?? []);
+        setmasterdata(response.data ?? []);
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    //fetchProductsByCategory();
+  }, []);
+
+  // const mealItems = useSelector(state => state.meals.availableMeals);
+  // useEffect(() => {
+  //   loadProducts();
+  // }, [mealItems]);
+  // const loadProducts = async () => {
+  //   await dispatch(mealsActions.MealsAction());
+  // };
+
+  const Item = ({item}) => (
+    <View style={{flex: 1, padding: 10}}>
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedCategory(item.id);
+        }}>
+        <Text
+          style={{
+            padding: 10,
+            backgroundColor: selectedCategory == item.id ? '#E23E3E' : 'white',
+            color: selectedCategory == item.id ? 'white' : 'red',
+            borderRadius: 12,
+            fontSize: 16,
+            fontFamily: 'FontsFree-Net-Poppins-Regular',
+          }}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const searchFilter = text => {
+    if (text) {
+      const newdata = masterdata.filter(item => {
+        const itemdata = item.title
+          ? item.title.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+
+        return itemdata.indexOf(textData) > -1;
+      });
+      setTimeout(() => setfilterdata(newdata), 3000);
+      setsearchdata(text);
+    } else {
+      setfilterdata(masterdata);
+      setsearchdata(text);
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <View
@@ -125,12 +112,19 @@ const Home = props => {
           backgroundColor: '#fff',
           padding: 10,
         }}>
-        <Text style={{fontSize: 22, fontWeight: '600', color: '#303030'}}>
+        <Text
+          style={{
+            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontSize: 24,
+            fontWeight: '600',
+            color: '#303030',
+          }}>
           Find best recipes
         </Text>
         <Text
           style={{
-            fontSize: 22,
+            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontSize: 24,
             lineHeight: 23,
             fontWeight: '600',
             color: '#303030',
@@ -139,31 +133,49 @@ const Home = props => {
         </Text>
       </View>
       <View style={styles.search}>
-        <Icons name="search" size={20} style={{left: 10}} />
-        <TextInput placeholder="Search receipe" style={{paddingLeft: 15}} />
+        <Icons name="search" size={22} style={{left: 10}} />
+        <TextInput
+          placeholder="Search receipe"
+          style={{paddingLeft: 15}}
+          value={searchdata}
+          onChangeText={text => {
+            searchFilter(text);
+          }}
+        />
       </View>
       <View style={{margin: 10}}>
-        <Text style={{fontSize: 22, fontWeight: '600', color: '#303030'}}>
+        <Text
+          style={{
+            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontSize: 24,
+            fontWeight: '600',
+            color: '#303030',
+          }}>
           Popular category
         </Text>
       </View>
-      <View style={{width: '100%', height: '5%'}}>
+      <View
+        style={{
+          top: -5,
+          width: '100%',
+          height: '8%',
+          alignSelf: 'center',
+        }}>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flat1}
           data={DATA}
           keyExtractor={item => item.id}
-          renderItem={({item}) => <Item title={item.title} />}
+          renderItem={Item}
         />
       </View>
 
       <View>
         <FlatList
-          data={mealItems}
+          data={filtereddata}
           keyExtractor={item => item._id}
           numColumns={2}
-          contentContainerStyle={{marginBottom: 200}}
+          contentContainerStyle={{padding: 10, paddingBottom: 390}}
           renderItem={({item}) => (
             <Category
               title={item.title}
@@ -188,7 +200,7 @@ const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: '#a7ffb5'},
   search: {
     borderWidth: 1,
-    opacity: 0.5,
+    opacity: 0.7,
     marginBottom: 10,
     borderColor: 'grey',
     width: '90%',
@@ -200,15 +212,13 @@ const styles = StyleSheet.create({
   },
   flat1: {
     padding: 10,
-    //backgroundColor: '#a7ffb5',
+    backgroundColor: '#a7ffb5',
   },
   item: {
     paddingHorizontal: 15,
     marginHorizontal: 10,
   },
-  title: {
-    color: 'red',
-  },
+  title: {},
 });
 
 export default Home;

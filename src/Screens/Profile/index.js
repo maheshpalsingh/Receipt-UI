@@ -1,7 +1,50 @@
-import React from 'react';
-import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
+import {URL} from '../../Store/actions/meals';
+import {removeToken} from '../../Store/actions/meals';
+const axios = require('axios');
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as userActions from '../../Store/actions/user';
+import Icons from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const mydetails = useSelector(state => state.users.mydetails);
+  let token = useSelector(state => state.meals.token);
+  // console.log(mydetails);
+  useEffect(() => {
+    const loadMe = async () => {
+      await dispatch(userActions.GetUsersAction());
+    };
+    loadMe();
+  }, [dispatch, mydetails]);
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const logout = () => {
+    fetch(`${URL}/users/logout`, config)
+      .then(async () => {
+        console.log('Thnk');
+        dispatch(removeToken());
+        await AsyncStorage.removeItem('token');
+      })
+      .catch(function (error) {
+        alert(error);
+      });
+  };
   return (
     <View style={{padding: 20, backgroundColor: '#fff', flex: 1}}>
       <Text style={{fontSize: 22, color: 'black', fontWeight: '700'}}>
@@ -21,7 +64,8 @@ const Profile = () => {
         }}>
         <Image
           source={{
-            uri: 'https://assets.entrepreneur.com/content/3x2/2000/20150820205507-single-man-outdoors-happy-bliss.jpeg',
+            // uri: 'https://assets.entrepreneur.com/content/3x2/2000/20150820205507-single-man-outdoors-happy-bliss.jpeg',
+            uri: mydetails.image,
           }}
           style={{
             width: '40%',
@@ -48,12 +92,15 @@ const Profile = () => {
       </View>
       <View style={{top: 30}}>
         <Text style={{fontWeight: 'bold', fontSize: 25, color: 'black'}}>
-          Alessandra Blair
+          {mydetails.name}
         </Text>
         <Text style={{fontSize: 19, opacity: 0.6, top: 20}}>
-          Hello world i'm Alessandra Blair, I'm from Italy , i love cooking so
-          much
+          {mydetails.aboutme}
         </Text>
+      </View>
+      <View
+        style={{justifyContent: 'center', alignItems: 'baseline', top: 100}}>
+        <Button title="Logout" onPress={logout} color="#e23e3e" />
       </View>
     </View>
   );

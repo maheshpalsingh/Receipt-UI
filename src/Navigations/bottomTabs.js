@@ -7,6 +7,7 @@ import SaveScreen from '../Screens/Save';
 import Home from '../Screens/Home/Home';
 import {Image, Text, View} from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
+import ProfileScreen from '../Screens/Profile/Profile';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -16,19 +17,16 @@ export const Tabs = () => {
       labeled={false}
       activeColor="#e23e3e"
       inactiveColor="grey"
-      style={{borderRadius: 15}}
       barStyle={{
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 25,
-        left: 15,
-        borderRadius: 20,
-        right: 20,
-
+        bottom: 20,
+        borderRadius: 15,
         shadowColor: 'black',
         elevation: 25,
-        height: 90,
+        padding: 8,
+        marginHorizontal: 20,
         backgroundColor: '#fff',
       }}>
       <Tab.Screen
@@ -57,7 +55,7 @@ export const Tabs = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({color}) => (
             <Icons name="person" color={color} size={25} />

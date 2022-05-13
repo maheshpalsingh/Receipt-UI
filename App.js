@@ -6,8 +6,10 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import mealsReducer from './src/Store/reducers/meals';
+import usersReducer from './src/Store/reducers/user';
 const rootReducer = combineReducers({
   meals: mealsReducer,
+  users: usersReducer,
 });
 const Store = createStore(rootReducer, applyMiddleware(thunk));
 const App = () => {
