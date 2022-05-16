@@ -1,18 +1,17 @@
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Image,
   TextInput,
   FlatList,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import Loader from '../../Components/Loader/AppLoader';
 import {DATA} from '../../Constants/modals';
 
 import * as mealsActions from './../../Store/actions/meals';
@@ -21,12 +20,23 @@ import {Category} from './MealUI';
 const Home = props => {
   const [masterdata, setmasterdata] = useState([]);
   const [filtereddata, setfilterdata] = useState([]);
-  const [category, setCategory] = useState('Breakfast');
 
+  const [isLoading, setLoading] = useState(false);
   const [searchdata, setsearchdata] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(0);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    fetchProducts();
+    //fetchProductsByCategory();
+    setLoading(false);
+  }, []);
 
   const fetchProducts = async () => {
     axios
@@ -40,9 +50,9 @@ const Home = props => {
       });
   };
 
-  const fetchProductsByCategory = async () => {
+  const fetchProductsByCategory = async cat => {
     axios
-      .get(`${mealsActions.URL}/meals/bycategory/${category}`)
+      .get(`${mealsActions.URL}/meals/bycategory/${cat}`)
       .then(response => {
         setfilterdata(response.data ?? []);
         setmasterdata(response.data ?? []);
@@ -51,11 +61,6 @@ const Home = props => {
         alert(error);
       });
   };
-
-  useEffect(() => {
-    fetchProducts();
-    //fetchProductsByCategory();
-  }, []);
 
   // const mealItems = useSelector(state => state.meals.availableMeals);
   // useEffect(() => {
@@ -70,6 +75,8 @@ const Home = props => {
       <TouchableOpacity
         onPress={() => {
           setSelectedCategory(item.id);
+          let title = item.title;
+          title == 'All' ? fetchProducts() : fetchProductsByCategory(title);
         }}>
         <Text
           style={{
@@ -78,7 +85,7 @@ const Home = props => {
             color: selectedCategory == item.id ? 'white' : 'red',
             borderRadius: 12,
             fontSize: 16,
-            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontFamily: 'Poppins-Medium',
           }}>
           {item.title}
         </Text>
@@ -108,25 +115,28 @@ const Home = props => {
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
-          margin: 20,
+          marginVertical: 20,
+          marginLeft: 10,
           backgroundColor: '#fff',
           padding: 10,
         }}>
         <Text
           style={{
-            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontFamily: 'Poppins-SemiBold',
             fontSize: 24,
-            fontWeight: '600',
             color: '#303030',
+            textAlign: 'left',
+            // backgroundColor: 'red',
           }}>
           Find best recipes
         </Text>
         <Text
           style={{
-            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            textAlign: 'left',
+            fontFamily: 'Poppins-SemiBold',
             fontSize: 24,
-            lineHeight: 23,
-            fontWeight: '600',
+            lineHeight: 28,
+
             color: '#303030',
           }}>
           for cooking
@@ -136,20 +146,24 @@ const Home = props => {
         <Icons name="search" size={22} style={{left: 10}} />
         <TextInput
           placeholder="Search receipe"
-          style={{paddingLeft: 15}}
+          style={{
+            flex: 1,
+            paddingLeft: 15,
+            justifyContent: 'center',
+            fontFamily: 'Poppins-Regular',
+          }}
           value={searchdata}
           onChangeText={text => {
             searchFilter(text);
           }}
         />
       </View>
-      <View style={{margin: 10}}>
+      <View style={{margin: 10, marginLeft: 20}}>
         <Text
           style={{
-            fontFamily: 'FontsFree-Net-Poppins-Regular',
+            fontFamily: 'Poppins-SemiBold',
             fontSize: 24,
-            fontWeight: '600',
-            color: '#303030',
+            color: '#181818',
           }}>
           Popular category
         </Text>
@@ -163,6 +177,7 @@ const Home = props => {
         }}>
         <FlatList
           horizontal
+          contentContainerStyle={{marginHorizontal: 10}}
           showsHorizontalScrollIndicator={false}
           data={DATA}
           keyExtractor={item => item.id}
@@ -175,7 +190,7 @@ const Home = props => {
           data={filtereddata}
           keyExtractor={item => item._id}
           numColumns={2}
-          contentContainerStyle={{padding: 10, paddingBottom: 390}}
+          contentContainerStyle={{padding: 10, paddingBottom: 420}}
           renderItem={({item}) => (
             <Category
               title={item.title}

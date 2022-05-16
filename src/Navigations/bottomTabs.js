@@ -45,14 +45,14 @@ export const Tabs = () => {
             <Icons name="bookmark" color={color} size={25} />
           ),
         }}></Tab.Screen>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Notification"
         component={Notification}
         options={{
           tabBarIcon: ({color}) => (
             <Icons name="notifications" color={color} size={25} />
           ),
-        }}></Tab.Screen>
+        }}></Tab.Screen> */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}

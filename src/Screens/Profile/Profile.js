@@ -43,7 +43,6 @@ const ProfileScreen = () => {
         style={{
           backgroundColor: 'white',
           //flex: 1,
-
           elevation: 5,
           height: '80%',
           borderRadius: 50,
@@ -79,12 +78,12 @@ const ProfileScreen = () => {
         </TouchableOpacity>
         <View
           style={{
-            //backgroundColor: 'blue',
-            width: '43%',
-            flexDirection: 'row',
+            backgroundColor: '#fff',
+            width: '50%',
             top: 100,
+            elevation: 10,
             left: 100,
-            height: '26%',
+            height: '30%',
             borderRadius: 80,
             borderWidth: 5,
             borderColor: '#fff',
@@ -94,6 +93,7 @@ const ProfileScreen = () => {
               uri: 'https://assets.entrepreneur.com/content/3x2/2000/20150820205507-single-man-outdoors-happy-bliss.jpeg',
               //uri: mydetails.image,
             }}
+            // style={StyleSheet.absoluteFillObject}
             style={{
               width: '100%',
               height: '100%',
@@ -145,11 +145,10 @@ const ProfileScreen = () => {
         <View
           style={{
             flexDirection: 'row',
-            top: 150,
+            top: 160,
             //left: '20%',
             justifyContent: 'center',
             alignItems: 'center',
-            paddingBottom: 10,
           }}>
           <Image
             source={require('../../Assets/Main/i1.png')}

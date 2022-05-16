@@ -33,7 +33,7 @@ const Details = props => {
           color="white"
           style={[
             StyleSheet.absoluteFillObject,
-            {marginTop: 20, marginLeft: 10},
+            {marginTop: 20, marginLeft: 10, elevation: 5},
           ]}
           onPress={() => {
             navigation.goBack();
@@ -104,6 +104,7 @@ const Details = props => {
               <View key={name} style={{flex: 1}}>
                 <Text
                   style={{
+                    fontFamily: 'Poppins-Regular',
                     flex: 1,
                     padding: 5,
                     width: '100%',
@@ -112,13 +113,13 @@ const Details = props => {
                     color: 'black',
                     fontSize: 14,
                   }}>
-                  🟡 {meals.steps[i]}
+                  🟡 {meals.ingredients[i]}
                 </Text>
               </View>
             );
           })}
         </View>
-        <View style={[styles.title, {marginVertical: 10}]}>
+        <View style={[styles.title, {marginVertical: 10, marginBottom: 30}]}>
           <Text style={styles.titletext}>Directions :</Text>
           {meals.steps.map((name, i) => {
             return (
@@ -159,13 +160,14 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   title: {
+    elevation: 5,
     flex: 1,
     height: '15%',
   },
   titletext: {
+    fontFamily: 'Poppins-SemiBold',
     flex: 1,
-    fontSize: 25,
-    fontWeight: '600',
+    fontSize: 24,
     color: 'black',
   },
   container2: {
@@ -176,6 +178,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   time: {
+    elevation: 5,
+    shadowColor: 'green',
     flex: 1,
     backgroundColor: '#8fff9f',
     padding: 20,
@@ -197,6 +201,8 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   time3: {
+    elevation: 5,
+    shadowColor: 'blue',
     flex: 1,
     backgroundColor: 'lightblue',
     paddingHorizontal: 20,
@@ -209,13 +215,14 @@ const styles = StyleSheet.create({
     height: '80%',
   },
   text1: {
+    fontFamily: 'Poppins-Regular',
     flex: 1,
     padding: 5,
     height: '50%',
     width: '100%',
     color: 'black',
     opacity: 0.8,
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

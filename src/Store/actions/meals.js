@@ -1,5 +1,6 @@
 export const GET_MEALS = 'GET_MEALS';
 export const ADD_FAVORITE = 'ADD_FAVORITE';
+export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
 export const SET_TOKEN = 'SET_TOKEN';
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 import axios from 'axios';
@@ -33,6 +34,9 @@ export const MealsAction = () => {
 
 export const addToFavorite = meal => {
   return {type: ADD_FAVORITE, meal: meal};
+};
+export const RemoveFavorite = meal => {
+  return {type: REMOVE_FAVORITE, meal: meal};
 };
 
 export const setToken = token => {

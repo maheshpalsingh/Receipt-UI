@@ -4,14 +4,17 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
 export const Category = props => {
   return (
-    <TouchableOpacity style={{flex: 1}} onPress={props.onPress}>
+    <TouchableOpacity
+      style={{flex: 1}}
+      activeOpacity={1}
+      onPress={props.onPress}>
       <View
         style={{
           backgroundColor: '#f1f1f1',
+          //backgroundColor: '#F08080',
           padding: 10,
           flex: 1,
           elevation: 3,
-
           borderRadius: 12,
           marginHorizontal: 10,
           marginTop: 50,
@@ -41,10 +44,11 @@ export const Category = props => {
         </View>
         <Text
           style={{
+            fontFamily: 'Poppins-SemiBold',
             marginTop: -40,
             marginBottom: 10,
             fontSize: 18,
-            color: 'black',
+            color: '#181818',
             alignSelf: 'center',
             fontWeight: '600',
             textAlign: 'center',
@@ -59,12 +63,13 @@ export const Category = props => {
             justifyContent: 'space-between',
           }}>
           <View>
-            <Text style={{marginVertical: 5, opacity: 0.8}}>Time</Text>
+            <Text style={{marginVertical: 5, opacity: 0.8}}></Text>
             <Text
               style={{
-                fontSize: 14,
-                color: 'black',
-                fontWeight: '400',
+                color: '#181818',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 15,
+                fontWeight: 'bold',
                 textAlign: 'left',
               }}>
               {props.steps} Mins

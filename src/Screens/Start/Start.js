@@ -29,10 +29,22 @@ const Start = () => {
           size={16}
           style={{marginTop: 3, marginRight: 10}}
         />
-        <Text style={{color: 'white', fontWeight: '700', fontSize: 18}}>
+        <Text
+          style={{
+            fontFamily: 'Poppins-Regular',
+            color: 'white',
+            fontWeight: '700',
+            fontSize: 18,
+          }}>
           60k+
         </Text>
-        <Text style={{color: 'white', fontWeight: '400', fontSize: 18}}>
+        <Text
+          style={{
+            fontFamily: 'Poppins-Regular',
+            color: 'white',
+            fontWeight: '400',
+            fontSize: 18,
+          }}>
           {'  '}
           Premium recipes
         </Text>

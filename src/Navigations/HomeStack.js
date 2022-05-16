@@ -3,8 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import StartScreen from '../Screens/Start';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Toptab from './TopTab';
-import HomeScreen from '../Screens/Home';
+
 import Details from '../Screens/Details';
 import Filter from '../Screens/Filter.js';
 import Start from '../Screens/Start/Start';

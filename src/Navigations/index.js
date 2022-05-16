@@ -6,9 +6,11 @@ import Authtab from './authTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setToken} from '../Store/actions/meals';
 import {useDispatch, useSelector} from 'react-redux';
+import Loader from './../Components/Loader/AppLoader';
 
 const AppLoader = () => {
   const [loggedIn, setloggedin] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const token = useSelector(state => state.meals.token);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -22,12 +24,17 @@ const AppLoader = () => {
           setloggedin(true);
           dispatch(setToken(token.token));
         }
-        // setLoading(false);
+        setLoading(false);
       });
     } catch (e) {
       console.log('Error', e);
     }
   }, [token]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <NavigationContainer>
       {loggedIn ? <Homestack /> : <Authtab />}

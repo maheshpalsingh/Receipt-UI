@@ -4,49 +4,60 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const SavedMeals = props => {
   return (
-    <View
-      style={{
-        marginTop: 10,
-        height: '30%',
-      }}>
-      <Image
-        source={{
-          //uri: 'http://10.0.2.2:3000/profile/profile_16521206226771.jpg',
-          uri: props.image,
-        }}
+    <TouchableOpacity style={{padding: 1}} onPress={props.onPress}>
+      <View
         style={{
-          width: '100%',
-          height: '80%',
-          borderRadius: 10,
-        }}
-      />
-      <TouchableOpacity
-        style={{
-          top: -165,
-          right: -320,
-          width: '10%',
-          height: '16%',
-          borderRadius: 50,
-          elevation: 5,
-          justifyContent: 'center',
-          alignItems: 'center',
           backgroundColor: '#fff',
-        }}>
-        <Icon name="bookmark" size={20} color="#e23e3e" />
-      </TouchableOpacity>
+          flex: 1,
 
-      <Text
-        style={{
-          top: -25,
-          fontWeight: '700',
-          fontSize: 18,
-          opacity: 0.8,
-          color: 'black',
-          left: 10,
+          width: '100%',
+          elevation: 5,
+          height: 200,
+          marginTop: 20,
+
+          borderRadius: 12,
         }}>
-        {/* Spaghetti with Tomato Sauce */}
-        {props.title}
-      </Text>
-    </View>
+        <Image
+          source={{
+            //uri: 'http://10.0.2.2:3000/profile/profile_16521206226771.jpg',
+            uri: props.image,
+          }}
+          style={{
+            width: '100%',
+            height: '80%',
+            borderRadius: 12,
+          }}
+        />
+        <TouchableOpacity
+          onPress={props.remove}
+          style={{
+            top: -150,
+            right: -320,
+            width: '10%',
+            height: '18%',
+            borderRadius: 50,
+            elevation: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#fff',
+          }}>
+          <Icon name="bookmark" size={20} color="#e23e3e" />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            backgroundColor: '#fff',
+            top: -25,
+            fontWeight: '700',
+            fontSize: 18,
+            opacity: 0.8,
+            color: 'black',
+            left: 10,
+          }}>
+          {/* Spaghetti with Tomato Sauce */}
+          {props.title}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
