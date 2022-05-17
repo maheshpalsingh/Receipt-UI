@@ -1,13 +1,12 @@
 import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import HomeScreen from '../Screens/Home';
-import Notification from '../Screens/Notification';
-import Profile from '../Screens/Profile';
+
 import SaveScreen from '../Screens/Save';
 import Home from '../Screens/Home/Home';
 import {Image, Text, View} from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
 import ProfileScreen from '../Screens/Profile/Profile';
+import AddMeal from '../Screens/Add Meal';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -45,14 +44,12 @@ export const Tabs = () => {
             <Icons name="bookmark" color={color} size={25} />
           ),
         }}></Tab.Screen>
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Notification"
-        component={Notification}
+        component={AddMeal}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icons name="notifications" color={color} size={25} />
-          ),
-        }}></Tab.Screen> */}
+          tabBarIcon: ({color}) => <Icons name="add" color={color} size={25} />,
+        }}></Tab.Screen>
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}

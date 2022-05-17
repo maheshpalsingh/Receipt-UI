@@ -18,6 +18,7 @@ export const Category = props => {
           borderRadius: 12,
           marginHorizontal: 10,
           marginTop: 50,
+          maxWidth: 180,
         }}>
         <View
           style={{
