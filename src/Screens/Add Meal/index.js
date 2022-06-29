@@ -17,13 +17,26 @@ import {MultiSelect, Dropdown} from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {DATA} from '../../Constants/modals';
 import {URL} from '../../Store/actions/meals';
-import {post} from '../../../../demo2_backend/src/routers/mealRouters';
+
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const data = [
   {label: 'simple', value: 'simple'},
   {label: 'hard', value: 'hard'},
   {label: 'medium', value: 'medium'},
 ];
+
+const options = {
+  title: 'Select Image',
+  type: 'library',
+  options: {
+    maxHeight: 200,
+    maxWidth: 200,
+    selectionLimit: 1,
+    mediaType: 'photo',
+    includeBase64: false,
+  },
+};
 
 const AddMeal = () => {
   const {navigate} = useNavigation();
@@ -32,9 +45,9 @@ const AddMeal = () => {
   const [errortext, setErrortext] = useState('');
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [complexity, setComplexity] = useState(null);
-
   const [inputInstruc, setInputInstruc] = useState([{value: ''}]);
   const [inputIngre, setInputIngre] = useState([{value: ''}]);
+  const [profile, setprofile] = useState('');
 
   const addHandler = () => {
     const _inputInstruc = [...inputInstruc];
@@ -67,6 +80,19 @@ const AddMeal = () => {
     setInputIngre(_inputIngre);
   };
 
+  const openGallery = async () => {
+    const images = await launchImageLibrary(options);
+    const formdata = new FormData();
+    formdata.append('profile', {
+      uri: images.assets[0].uri,
+      type: images.assets[0].type,
+      image: images.assets[0].fileName,
+    });
+    setprofile(images.assets[0].fileName);
+
+    console.log('Image', images);
+  };
+
   const handleSubmitButton = () => {
     setErrortext('');
     // if (!userName) {
@@ -94,6 +120,7 @@ const AddMeal = () => {
     //   return;
     // }
     // setLoading(true);
+
     var dataToSend = {
       title: userName,
       category: selectedCategory,
@@ -134,12 +161,18 @@ const AddMeal = () => {
         flex: 1,
         padding: 10,
         backgroundColor: 'white',
-        marginBottom: 100,
+        marginBottom: 50,
       }}>
       <KeyboardAvoidingView enabled="true">
         <View style={{marginVertical: 10}}>
-          <Text style={{marginLeft: 10, color: 'black', fontSize: 16}}>
-            RECIPE NAME
+          <Text
+            style={{
+              fontFamily: 'Poppins-SemiBold',
+              marginLeft: 10,
+              color: 'black',
+              fontSize: 18,
+            }}>
+            Recipe name
           </Text>
           <TextInput
             style={styles.input}
@@ -158,22 +191,27 @@ const AddMeal = () => {
             style={{
               height: '10%',
               flexDirection: 'row',
-              justifyContent: 'flex-start',
+              justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text style={{marginLeft: 10, color: 'black', fontSize: 16}}>
-              COOKING TIME(in Minutes)
+            <Text
+              style={{
+                fontFamily: 'Poppins-SemiBold',
+                marginLeft: 10,
+                color: 'black',
+                fontSize: 18,
+              }}>
+              Cooking Time(in Minutes)
             </Text>
             <TextInput
               style={{
                 color: 'black',
                 borderRadius: 5,
-                width: '15%',
-                height: '90%',
+                width: '12%',
+                height: '60%',
                 borderWidth: 1,
                 borderColor: '#e23e23',
-                margin: 30,
-                right: -85,
+                margin: 10,
                 textAlign: 'center',
               }}
               placeholderTextColor="black"
@@ -214,10 +252,11 @@ const AddMeal = () => {
 
           <Text
             style={{
+              fontFamily: 'Poppins-SemiBold',
               top: 10,
               marginHorizontal: 10,
               color: 'black',
-              fontSize: 16,
+              fontSize: 18,
             }}>
             Complexity
           </Text>
@@ -250,17 +289,24 @@ const AddMeal = () => {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={{marginLeft: 20, fontSize: 16, color: 'black'}}>
-              INSTRUCTIONS
+            <Text
+              style={{
+                fontFamily: 'Poppins-SemiBold',
+                marginLeft: 10,
+                fontSize: 18,
+                color: 'black',
+              }}>
+              Instructions
             </Text>
             <TouchableOpacity style={{right: 10}} onPress={addHandler}>
               <Text
                 style={{
+                  fontFamily: 'Poppins-SemiBold',
                   marginHorizontal: 10,
                   color: 'black',
                   fontSize: 16,
                 }}>
-                ADD +
+                Add +
               </Text>
             </TouchableOpacity>
           </View>
@@ -283,18 +329,26 @@ const AddMeal = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               marginTop: 10,
+              elevation: 5,
             }}>
-            <Text style={{marginLeft: 20, fontSize: 16, color: 'black'}}>
-              INGREDIENTS
+            <Text
+              style={{
+                fontFamily: 'Poppins-SemiBold',
+                marginLeft: 10,
+                fontSize: 18,
+                color: 'black',
+              }}>
+              Ingredients
             </Text>
             <TouchableOpacity style={{right: 10}} onPress={addHandler1}>
               <Text
                 style={{
+                  fontFamily: 'Poppins-SemiBold',
                   marginHorizontal: 10,
                   color: 'black',
                   fontSize: 16,
                 }}>
-                ADD +
+                Add +
               </Text>
             </TouchableOpacity>
           </View>
@@ -311,6 +365,24 @@ const AddMeal = () => {
             </View>
           ))}
 
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={openGallery}
+            style={{
+              margin: 10,
+              borderRadius: 5,
+              padding: 10,
+              width: '30%',
+              backgroundColor: '#f1f1f1',
+
+              borderWidth: 1,
+              borderStyle: 'dashed',
+              borderColor: '#e23e23',
+            }}>
+            <Text style={{color: 'black', textAlign: 'center'}}>
+              Select Image
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonView}
             onPress={handleSubmitButton}>
@@ -336,7 +408,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   dropdown: {
-    //top: -20,
     //backgroundColor: 'red',
     height: 50,
     margin: 10,
@@ -344,12 +415,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   placeholderStyle: {
-    //top: -50,
     fontSize: 16,
-    color: 'black',
+    //color: 'black',
   },
   selectedTextStyle: {
     fontSize: 14,
+    padding: 5,
+    marginHorizontal: 5,
   },
   iconStyle: {
     width: 20,

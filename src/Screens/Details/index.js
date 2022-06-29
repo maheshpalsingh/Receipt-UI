@@ -113,7 +113,8 @@ const Details = props => {
                     color: 'black',
                     fontSize: 14,
                   }}>
-                  🟡 {meals.ingredients[i]}
+                  🔴 {'  '}
+                  {meals.ingredients[i]}
                 </Text>
               </View>
             );

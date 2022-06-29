@@ -104,12 +104,14 @@ const ProfileScreen = () => {
         <View
           style={{
             top: 110,
-            left: '20%',
-
+            left: '10%',
+            // backgroundColor: 'black',
             borderBottomWidth: 3,
             borderColor: '#e23e3e',
-            width: '60%',
+            width: '80%',
             paddingBottom: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
           <Text
             style={{
@@ -168,15 +170,17 @@ const ProfileScreen = () => {
           onPress={logout}
           style={{
             backgroundColor: 'white',
-            top: 200,
-            left: 300,
+            top: 230,
+            left: 250,
             elevation: 5,
             height: '6%',
-            width: '10%',
-            borderRadius: 30,
+            width: '25%',
+            borderRadius: 10,
             alignItems: 'center',
             justifyContent: 'center',
+            flexDirection: 'row',
           }}>
+          <Text>Logout</Text>
           <Icon
             name="log-out"
             size={25}
